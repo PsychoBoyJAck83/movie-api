@@ -3,8 +3,7 @@ const url = require("url");
 const fs = require("fs");
 
 http.createServer((request, response) => {
-   //response.writeHead(200, {"Content-Type": "text/plain"});
-   //response.end("Hello Node!");
+
    let addr = request.url;
    let q = url.parse(addr, true);
    filePath = "";
@@ -22,6 +21,8 @@ http.createServer((request, response) => {
     } else {
       filePath = "index.html";
     }
+    response.writeHead(200, {"Content-Type": "text/plain"});
+    response.end("Hello Node!");
 }).listen(8080);
 
 console.log("My first Node test server is running on Port 8080.");
