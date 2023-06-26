@@ -1,4 +1,7 @@
-const express = require("express");
+const    express = require("express"),
+         morgan = require('morgan'),
+         fs = require("fs"),
+         path = require("path");
 const app = express();
 
 let myTopTenMovies = [
@@ -79,6 +82,11 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {f
 app.use(express.static("public"));
 
 app.use(morgan('combined', {stream: accessLogStream}));
+
+app.use((err, req, res, next) => {
+   console.error(err.stack);
+   res.status(500).send('Something broke!');
+ });
 
 app.get("/movies", (req, res) => {
    res.json(myTopTenMovies);
