@@ -1,8 +1,4 @@
-URL: /
-Timestamp: Wed Jun 21 2023 22:39:10 GMT+0200 (Central European Summer Time)
-URL: /
-Timestamp: Wed Jun 21 2023 22:39:46 GMT+0200 (Central European Summer Time)
-URL: /
-Timestamp: Wed Jun 21 2023 22:41:26 GMT+0200 (Central European Summer Time)
-URL: /favicon.ico
-Timestamp: Wed Jun 21 2023 22:41:26 GMT+0200 (Central European Summer Time)
+::ffff:127.0.0.1 - - [26/Jun/2023:17:34:51 +0000] "GET /documentation.htm HTTP/1.1" 404 156 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+::ffff:127.0.0.1 - - [26/Jun/2023:17:34:57 +0000] "GET / HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+::ffff:127.0.0.1 - - [26/Jun/2023:17:35:11 +0000] "GET /movies HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+::ffff:127.0.0.1 - - [26/Jun/2023:17:35:41 +0000] "GET /movie HTTP/1.1" 404 144 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
