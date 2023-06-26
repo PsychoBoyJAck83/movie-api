@@ -74,10 +74,20 @@ let myTopTenMovies = [
    }
 ];
 
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
+
+app.use(express.static("public"));
+
+app.use(morgan('combined', {stream: accessLogStream}));
+
 app.get("/movies", (req, res) => {
    res.json(myTopTenMovies);
  });
 
  app.get("/", (req, res) => {
    res.send("I will make him an offer he can`t refuse...");
+ });
+
+ app.listen(8080, () => {
+   //console.log("Your app is listening on port 8080.");
  });
