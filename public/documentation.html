@@ -36,6 +36,7 @@
 						 <th>Business Logic</th>
 						 <th>URL</th>
 						 <th>HTTP Method</th>
+						 <th>Querry parameters</th>
 						 <th>Request body data format</th>
 						 <th>Response body data format</th>
 						</b></tr>
@@ -45,6 +46,7 @@
 						 <td>Return a list of all movies</td>
 						 <td>/movies</td>
 						 <td>GET</td>
+						 <td>None</td>
 						 <td>None</td>
 						 <td>An array of JSON objects holding data about the movies structured like this example:<br>
 							&lcub;<br>
@@ -59,6 +61,7 @@
 						<td>Return data (title, year, director, writers, stars) about a single movie by title to the user;</td>
 						<td>/movies/[title]</td>
 						<td>GET</td>
+						<td>:title<br> (title of the requested movie) </td>
 						<td>None</td>
 						<td>A JSON object holding data about the movie structured like this example:<br>
 						  &lcub;<br>
@@ -73,6 +76,7 @@
 						<td>Return data about a genre (description) by name/title (e.g., “Thriller”)</td>
 						<td>/movies/[title]/genre</td>
 						<td>GET</td>
+						<td>title<br> (title of the movie) </td>
 						<td>None</td>
 						<td>A JSON object containing an array of what genres the movie(by title) belongs to structured like this<br>
 						  &lcub;<br>
@@ -83,6 +87,7 @@
 						<td>Return data about a director (bio, birth year, death year) by name</td>
 						<td>/directors/[name]</td>
 						<td>GET</td>
+						<td>name<br>(Name of the director)</td>
 						<td>None</td>
 						<td>A JSON object containing information about the requested (by name) director structured like this(death year will be empty if still alive):<br>
 						  &lcub;<br>
@@ -96,6 +101,7 @@
 						<td>Register new user</td>
 						<td>/users</td>
 						<td>POST</td>
+						<td>None</td>
 						<td>A JSON object holding information about the new user structured like this:<br><br>
 							&lcub;<br>
 							userName:	"Clubberboy69",<br>
@@ -109,6 +115,7 @@
 						<td>Allows users to update their user info (username, password, email, date of birth)</td>
 						<td>/users/[username]/[user data]/[new user data value]</td>
 						<td>PUT</td>
+						<td>username,<br>userdata<br>(user data that is to be changed),<br>new user data value<br>(the new value e.g. new user name) </td>
 						<td>None<br><br></td>
 						<td>A text message indicating wether the update was successful and what was updated <br></td>
 					 </tr>
@@ -116,6 +123,7 @@
 						<td>Allow users to add a movie to their list of favorites</td>
 						<td>/users/[username]/favorites/[movie title]</td>
 						<td>POST</td>
+						<td>username<br>movie title(the movie that will be added to the list)</td>
 						<td>None<br><br></td>
 						<td>A text message indicating that the movie has been added to the favorites list<br></td>
 					 </tr>
@@ -123,6 +131,7 @@
 						<td>Allow users to remove a movie from their list of favorites</td>
 						<td>/users/[username]/favorites/[movie title]</td>
 						<td>DELETE</td>
+						<td>username<br>movie title(the movie that will be removed from the list)</td>
 						<td>None<br><br></td>
 						<td>A text message indicating that the movie has been removed from the favorites list<br></td>
 					 </tr>
@@ -130,6 +139,7 @@
 						<td>Allow existing users to deregister</td>
 						<td>/users/[username]</td>
 						<td>DELETE</td>
+						<td>username</td>
 						<td>None<br><br></td>
 						<td>A text message indicating that the user is deregistered<br></td>
 					 </tr>
