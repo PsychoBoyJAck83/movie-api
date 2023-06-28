@@ -103,7 +103,14 @@ const directorList = [
 
 ];
 
-let userList = [];
+let userList = [
+   {
+      userName: "Clubberboy69",
+      email: "example@veryhotmail.com",
+      password: "12345Spaceballs",
+      birthyear: 1969
+   }
+];
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
 
@@ -118,18 +125,20 @@ app.use((err, req, res, next) => {
 
 app.get("/movies", (req, res) => {
    res.json(moviesList);
+   res.send("Test");
  });
 
-app.get("/movies/ :title", (req, res) => {
+app.get("/movies/:title", (req, res) => {
    res.json(moviesList.find((movie) =>
    { return movie.title === req.params.title }));
 });
 
-app.get("/movies/:title/genre",(req,res) => {
-   let movie = moviesList.find((movie) => {
-      movie.title === req.params.title})
-   res.json(movie.genres);
-});
+app.get("/movies/:title/genre", (req, res) => {
+   //res.send("I will make him an offer he can`t refuse...");
+   let theMovie = moviesList.find((movie) =>
+   { return movie.title === req.params.title });
+   res.json(theMovie.genres);
+ });
 
 app.get("/directors/:name",(req,res)=>{
    res.json(directorList.find((director)=>{
@@ -138,49 +147,35 @@ app.get("/directors/:name",(req,res)=>{
 });
 
 app.post("/users",(req,res)=>{
-   let newUser = req.body;
-   //simple validation
-   if(!newUser.name)
-      res.status(400).send("Name is missing");
-   
-   else if(!newUser.email)
-      res.status(400).send("Email is missing");
-   
-   else if(!newUser.password)
-      res.status(400).send("Pasword is missing");
-   
-   else if(!newUser.birthYear)
-      res.status(400).send("Birth year is missing");
-   
-   else {
-      newUser.id = uuid.v4();
-      userList.push(newUser);
+   //let newUser = req.body;
+   //   newUser.id = uuid.v4();
+   //   userList.push(newUser);
       res.status(201).send("New user has been successfully created");
    }
-   
-         
-});
+);
 
-app.put("/users/:username/:userData/:newUserDataValue",(req,res=>{
+app.put("/users/update/:username/:userData/:newUserDataValue",((req,res)=>{
    res.send(`${req.params.username}s ${req.params.userData} has been updated!`);
 }));
 
-app.post("/users/:username/favorites/:movieTitle",(req,res=>{
+app.post("/users/:username/favorites/:movieTitle",((req,res)=>{
    res.status(201).send(`${req.params.movieTitle} has been added to the favorites list!`);
    //more to come
 }));
 
-app.delete("/users/:username/favorites/:movieTitle",(req,res=>{
+app.delete("/users/:username/favorites/:movieTitle",((req,res)=>{
    res.status(201).send(`${req.params.movieTitle} has been removed from the favorites list!`);
    //more to come
 }));
 
-app.delete("/users/:username",(req,res=>{
+app.delete("/users/:username",((req,res)=>{
    let userToDelete = userList.find((user)=>{
-      return user.name === req.params.username
+      return user.userName === req.params.username
    })
    if(!userToDelete)
       res.status(400).send(`${req.params.username} was not found!`);
+   else
+      res.status(201).send(`User ${req.params.username} was deregistered!`);
    //more to come
 }));
 
