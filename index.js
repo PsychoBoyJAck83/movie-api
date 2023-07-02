@@ -11,7 +11,7 @@ const Movies = Models.Movie;
 const Users = Models.User;
 
 mongoose
-.connect("mongodb://localhost:27017/movie_api", {
+.connect("mongodb://127.0.0.1:27017/movie_api", {
 useNewUrlParser: true,
 useUnifiedTopology: true,
 })
@@ -21,15 +21,6 @@ console.log("Connected to the database!");
 .catch((err) => {
    console.error("Failed to connect to the database:", err);
    });
-
-/*async function connectToDatabase() {
-try {
-await mongoose.connect('mongodb://localhost:27017/movie_api', { useNewUrlParser: true, useUnifiedTopology: true });
-console.log('Connected to the database!');
-} catch (error) {
-console.error('Failed to connect to the database:', error);
-}
-}*/
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
 
@@ -43,7 +34,7 @@ app.use((err, req, res, next) => {
  });
 
  app.get("/movies", (req, res) => {
-   Movies.find({ "genre.name": "Crime" })
+   Movies.find({})
    .then((movies) => {
    res.json(movies);
    })
