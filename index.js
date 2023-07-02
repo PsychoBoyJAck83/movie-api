@@ -22,8 +22,12 @@ app.use((err, req, res, next) => {
  });
 
 app.get("/movies", (req, res) => {
-   res.json(moviesList);
-   res.send("Test");
+   Movies.find({}).then((movies) => {
+      res.json(movies);
+   })
+
+   //res.json(moviesList);
+   //res.send("Test");
  });
 
 app.get("/movies/:title", (req, res) => {
