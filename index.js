@@ -10,6 +10,27 @@ const Models = require('./models.js');
 const Movies = Models.Movie;
 const Users = Models.User;
 
+mongoose
+.connect("mongodb://localhost:27017/movie_api", {
+useNewUrlParser: true,
+useUnifiedTopology: true,
+})
+.then(() => {
+console.log("Connected to the database!");
+})
+.catch((err) => {
+   console.error("Failed to connect to the database:", err);
+   });
+
+/*async function connectToDatabase() {
+try {
+await mongoose.connect('mongodb://localhost:27017/movie_api', { useNewUrlParser: true, useUnifiedTopology: true });
+console.log('Connected to the database!');
+} catch (error) {
+console.error('Failed to connect to the database:', error);
+}
+}*/
+
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
 
 app.use(express.static("public"));
@@ -21,14 +42,16 @@ app.use((err, req, res, next) => {
    res.status(500).send('Something broke!');
  });
 
-app.get("/movies", (req, res) => {
-   Movies.find({}).then((movies) => {
-      res.json(movies);
+ app.get("/movies", (req, res) => {
+   Movies.find({ "genre.name": "Crime" })
+   .then((movies) => {
+   res.json(movies);
    })
-
-   //res.json(moviesList);
-   //res.send("Test");
- });
+   .catch((error) => {
+   console.error("Failed to fetch movies:", error);
+   res.status(500).send("Failed to fetch movies");
+   });
+   });
 
 app.get("/movies/:title", (req, res) => {
    res.json(moviesList.find((movie) =>
