@@ -43,7 +43,7 @@ const moviesList = [
       genres:     ["Drama"],
       director:   ["David Fincher"],
       writers:    ["Chuck Palahniuk","Jim Uhls"],
-      stars:      ["Brad Pitt","Edward NortonM","eat Loaf"]
+      stars:      ["Brad Pitt","Edward Norton","Meat Loaf"]
    },
    {
       title:      "American Beauty",
