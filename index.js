@@ -67,9 +67,14 @@ app.get("/movies/:title/genre", (req, res) => {
  });
 
 app.get("/directors/:name",(req,res)=>{
-   res.json(directorList.find((director)=>{
-      return director.name === req.params.name
-   }))
+   Movies.findOne({"director.name":req.params.name})
+      .then((movie) => {
+         res.json(movie.director);
+      })
+      .catch((error => {
+         console.error("Failed to fetch :" + req.params.name + " info", error);
+         res.status(500).send("Failed to fetch :" + req.params.name + " info", error);
+      }))
 });
 
 app.post("/users",(req,res)=>{
