@@ -35,18 +35,29 @@ app.use((err, req, res, next) => {
 
  app.get("/movies", (req, res) => {
    Movies.find({})
-   .then((movies) => {
-   res.json(movies);
-   })
-   .catch((error) => {
-   console.error("Failed to fetch movies:", error);
-   res.status(500).send("Failed to fetch movies");
-   });
+      .then((movies) => {
+         res.json(movies);
+      })
+      .catch((error) => {
+         console.error("Failed to fetch movies:", error);
+         res.status(500).send("Failed to fetch movies");
+      });
    });
 
 app.get("/movies/:title", (req, res) => {
-   res.json(moviesList.find((movie) =>
-   { return movie.title === req.params.title }));
+   Movies.findOne({title: req.params.title})
+      .then((movie) => {
+         res.json(movie);
+      })
+      .catch((error) => {
+         console.error("Failed to fetch :" + req.params.title, error);
+         res.status(500).send("Failed to fetch movies");
+      });   
+   
+   
+   
+   //res.json(moviesList.find((movie) =>
+   //{ return movie.title === req.params.title }));
 });
 
 app.get("/movies/:title/genre", (req, res) => {
