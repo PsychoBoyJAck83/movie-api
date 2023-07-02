@@ -51,20 +51,19 @@ app.get("/movies/:title", (req, res) => {
       })
       .catch((error) => {
          console.error("Failed to fetch :" + req.params.title, error);
-         res.status(500).send("Failed to fetch movies");
+         res.status(500).send("Failed to fetch :" + req.params.title, error);
       });   
-   
-   
-   
-   //res.json(moviesList.find((movie) =>
-   //{ return movie.title === req.params.title }));
 });
 
 app.get("/movies/:title/genre", (req, res) => {
-   //res.send("I will make him an offer he can`t refuse...");
-   let theMovie = moviesList.find((movie) =>
-   { return movie.title === req.params.title });
-   res.json(theMovie.genres);
+   Movies.findOne({title: req.params.title})
+      .then((movie) => {
+         res.json(movie.genre);
+      })
+      .catch((error) => {
+         console.error("Failed to fetch :" + req.params.title + "'s genre", error);
+         res.status(500).send("Failed to fetch :" + req.params.title + "'s genre", error);
+      }); 
  });
 
 app.get("/directors/:name",(req,res)=>{
