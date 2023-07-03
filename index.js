@@ -144,28 +144,55 @@ app.post("/users/:username/favorites/:movieID",((req,res)=>{
                      if(!user)
                         res.send("User " + req.params.username +" is unknown.");
                      else
-                        res.json(user);
+                        res.json(user.favoriteMovies);
                   })
             }
          })
    }
 }));
 
-app.delete("/users/:username/favorites/:movieTitle",((req,res)=>{
 
-   res.status(201).send(`${req.params.movieTitle} has been removed from the favorites list!`);
-   //more to come
+app.delete("/users/:username/favorites/:movieID",((req,res)=>{
+   if(req.params.movieID.length != 24)
+      res.send("invalid movieID");
+   else{
+      Movies.findById(req.params.movieID)
+         .then((movie) => {
+            if(!movie)
+               res.send("Movie ID " + req.params.movieID +" is unknown.");
+            else {
+               Users.findOneAndUpdate({username : req.params.username},{$pull: {favoriteMovies : req.params.movieID}},{returnDocument:'after'})
+                  .then((user) => {
+                     if(!user)
+                        res.send("User " + req.params.username +" is unknown.");
+                     else
+                        res.json(user.favoriteMovies);
+                  })
+                  .catch((error) => {
+                     console.error(error);
+                     res.status(500).send('Error: ' + error);
+                  })
+            }
+         })
+         .catch((error) => {
+            console.error(error);
+            res.status(500).send('Error: ' + error);
+         })
+   }
 }));
 
 app.delete("/users/:username",((req,res)=>{
-   let userToDelete = userList.find((user)=>{
-      return user.userName === req.params.username
-   })
-   if(!userToDelete)
-      res.status(400).send(`${req.params.username} was not found!`);
-   else
-      res.status(201).send(`User ${req.params.username} was deregistered!`);
-   //more to come
+   Users.findOneAndDelete({username : req.params.username})
+      .then( (user) => {
+         if(!user)
+            res.send("User " + req.params.username + " not found!");
+         else   
+            res.send("User " + req.params.username + " was deleted!")
+      })
+      .catch((error) => {
+         console.error(error);
+         res.status(500).send('Error: ' + error);
+      })
 }));
 
  app.get("/", (req, res) => {
@@ -173,5 +200,5 @@ app.delete("/users/:username",((req,res)=>{
  });
 
  app.listen(8080, () => {
-   //console.log("Your app is listening on port 8080.");
+   console.log("Your app is listening on port 8080.");
  });
