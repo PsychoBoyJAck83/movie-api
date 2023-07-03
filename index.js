@@ -121,7 +121,7 @@ app.put("/users/update/:username",((req,res)=>{
          birthDate: req.body.birthDate
       },{returnDocument:'after'})
       .then((user) => {
-         res.json(user);
+         res.status(200).json(user);
       })
       .catch((error) => {
          console.error(error);
@@ -132,19 +132,19 @@ app.put("/users/update/:username",((req,res)=>{
 
 app.post("/users/:username/favorites/:movieID",((req,res)=>{
    if(req.params.movieID.length != 24)
-      res.send("invalid movieID");
+      res.status(400).send("invalid movieID");
    else{
       Movies.findById(req.params.movieID)
          .then((movie) => {
             if(!movie)
-               res.send("Movie ID " + req.params.movieID +" is unknown.");
+               res.status(400).send("Movie ID " + req.params.movieID +" is unknown.");
             else {
                Users.findOneAndUpdate({username : req.params.username},{$addToSet: {favoriteMovies : req.params.movieID}},{returnDocument:'after'})
                   .then((user) => {
                      if(!user)
-                        res.send("User " + req.params.username +" is unknown.");
+                        res.status(400).send("User " + req.params.username +" is unknown.");
                      else
-                        res.json(user.favoriteMovies);
+                        res.status(201).json(user.favoriteMovies);
                   })
             }
          })
