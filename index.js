@@ -44,7 +44,7 @@ app.use((err, req, res, next) => {
  app.get("/movies", (req, res) => {
    Movies.find({})
       .then((movies) => {
-         res.json(movies);
+         res.status(200).json(movies);
       })
       .catch((error) => {
          console.error(error);
@@ -55,7 +55,7 @@ app.use((err, req, res, next) => {
 app.get("/movies/:title", (req, res) => {
    Movies.findOne({title: req.params.title})
       .then((movie) => {
-         res.json(movie);
+         res.status(200).json(movie);
       })
       .catch((error) => {
          console.error(error);
@@ -66,7 +66,7 @@ app.get("/movies/:title", (req, res) => {
 app.get("/movies/:title/genre", (req, res) => {
    Movies.findOne({title: req.params.title})
       .then((movie) => {
-         res.json(movie.genre);
+         res.status(200).json(movie.genre);
       })
       .catch((error) => {
          console.error(error);
@@ -77,7 +77,7 @@ app.get("/movies/:title/genre", (req, res) => {
 app.get("/directors/:name",(req,res)=>{
    Movies.findOne({"director.name":req.params.name})
       .then((movie) => {
-         res.json(movie.director);
+         res.status(200).json(movie.director);
       })
       .catch((error => {
          console.error(error);
@@ -154,19 +154,19 @@ app.post("/users/:username/favorites/:movieID",((req,res)=>{
 
 app.delete("/users/:username/favorites/:movieID",((req,res)=>{
    if(req.params.movieID.length != 24)
-      res.send("invalid movieID");
+      res.status(400).send("invalid movieID");
    else{
       Movies.findById(req.params.movieID)
          .then((movie) => {
             if(!movie)
-               res.send("Movie ID " + req.params.movieID +" is unknown.");
+               res.status(400).send("Movie ID " + req.params.movieID +" is unknown.");
             else {
                Users.findOneAndUpdate({username : req.params.username},{$pull: {favoriteMovies : req.params.movieID}},{returnDocument:'after'})
                   .then((user) => {
                      if(!user)
-                        res.send("User " + req.params.username +" is unknown.");
+                        res.status(400).send("User " + req.params.username +" is unknown.");
                      else
-                        res.json(user.favoriteMovies);
+                        res.status(200).json(user.favoriteMovies);
                   })
                   .catch((error) => {
                      console.error(error);
@@ -185,9 +185,9 @@ app.delete("/users/:username",((req,res)=>{
    Users.findOneAndDelete({username : req.params.username})
       .then( (user) => {
          if(!user)
-            res.send("User " + req.params.username + " not found!");
+            res.status(400).send("User " + req.params.username + " not found!");
          else   
-            res.send("User " + req.params.username + " was deleted!")
+            res.status(200).send("User " + req.params.username + " was deleted!")
       })
       .catch((error) => {
          console.error(error);
@@ -196,7 +196,7 @@ app.delete("/users/:username",((req,res)=>{
 }));
 
  app.get("/", (req, res) => {
-   res.send("I will make him an offer he can`t refuse...");
+   res.status(200).send("I will make him an offer he can`t refuse...");
  });
 
  app.listen(8080, () => {
