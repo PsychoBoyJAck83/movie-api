@@ -1,12 +1,12 @@
 const    express = require("express"),
          morgan = require('morgan'),
          fs = require("fs"),
-         path = require("path");
-const bodyParser = require('body-parser');
+         path = require("path"),
+         bodyParser = require('body-parser'),
+         mongoose = require('mongoose'),
+         Models = require('./models.js');
+         
 const app = express();
-
-const mongoose = require('mongoose');
-const Models = require('./models.js');
 
 const Movies = Models.Movie;
 const Users = Models.User;
@@ -25,6 +25,7 @@ console.log("Connected to the database!");
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
 
+//-----------------------------------------------------------------------------------------------------------------Middleware
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -38,14 +39,16 @@ app.use((err, req, res, next) => {
    res.status(500).send('Something broke!');
  });
 
+//-----------------------------------------------------------------------------------------------------------------Endpoints 
+
  app.get("/movies", (req, res) => {
    Movies.find({})
       .then((movies) => {
          res.json(movies);
       })
       .catch((error) => {
-         console.error("Failed to fetch movies:", error);
-         res.status(500).send("Failed to fetch movies");
+         console.error(error);
+         res.status(500).send('Error: ' + error);
       });
    });
 
@@ -55,8 +58,8 @@ app.get("/movies/:title", (req, res) => {
          res.json(movie);
       })
       .catch((error) => {
-         console.error("Failed to fetch :" + req.params.title, error);
-         res.status(500).send("Failed to fetch :" + req.params.title, error);
+         console.error(error);
+         res.status(500).send('Error: ' + error);
       });   
 });
 
@@ -66,8 +69,8 @@ app.get("/movies/:title/genre", (req, res) => {
          res.json(movie.genre);
       })
       .catch((error) => {
-         console.error("Failed to fetch :" + req.params.title + "'s genre", error);
-         res.status(500).send("Failed to fetch :" + req.params.title + "'s genre", error);
+         console.error(error);
+         res.status(500).send('Error: ' + error);
       }); 
  });
 
@@ -77,16 +80,16 @@ app.get("/directors/:name",(req,res)=>{
          res.json(movie.director);
       })
       .catch((error => {
-         console.error("Failed to fetch :" + req.params.name + " info", error);
-         res.status(500).send("Failed to fetch :" + req.params.name + " info", error);
+         console.error(error);
+         res.status(500).send('Error: ' + error);
       }))
 });
 
-app.post("/users",(req,res)=>{
-   Users.findOne({ Username: req.body.username })
+app.post("/users",(req,res) => {
+   Users.findOne({ username: req.body.username })
    .then((user) => {
      if (user) {
-       return res.status(400).send(req.body.username + 'already exists');
+       return res.status(400).send(req.body.username + ' already exists');
      } else {
        Users
          .create({
@@ -109,16 +112,47 @@ app.post("/users",(req,res)=>{
    }
 );
 
-app.put("/users/update/:username/:userData/:newUserDataValue",((req,res)=>{
-   res.send(`${req.params.username}s ${req.params.userData} has been updated!`);
+app.put("/users/update/:username",((req,res)=>{
+   Users.findOneAndUpdate({ username: req.params.username },
+      {
+         username: req.body.username,
+         password: req.body.password,
+         email: req.body.email,
+         birthDate: req.body.birthDate
+      },{returnDocument:'after'})
+      .then((user) => {
+         res.json(user);
+      })
+      .catch((error) => {
+         console.error(error);
+         res.status(500).send('Error: ' + error);
+      })
+
 }));
 
-app.post("/users/:username/favorites/:movieTitle",((req,res)=>{
-   res.status(201).send(`${req.params.movieTitle} has been added to the favorites list!`);
-   //more to come
+app.post("/users/:username/favorites/:movieID",((req,res)=>{
+   if(req.params.movieID.length != 24)
+      res.send("invalid movieID");
+   else{
+      Movies.findById(req.params.movieID)
+         .then((movie) => {
+            if(!movie)
+               res.send("Movie ID " + req.params.movieID +" is unknown.");
+            else {
+               Users.findOneAndUpdate({username : req.params.username},{$addToSet: {favoriteMovies : req.params.movieID}},{returnDocument:'after'})
+                  .then((user) => {
+                     if(!user)
+                        res.send("User " + req.params.username +" is unknown.");
+                     else
+                        res.json(user);
+                  })
+            }
+         })
+   }
 }));
 
 app.delete("/users/:username/favorites/:movieTitle",((req,res)=>{
+
    res.status(201).send(`${req.params.movieTitle} has been removed from the favorites list!`);
    //more to come
 }));
