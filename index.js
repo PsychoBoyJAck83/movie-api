@@ -2,6 +2,7 @@ const    express = require("express"),
          morgan = require('morgan'),
          fs = require("fs"),
          path = require("path");
+const bodyParser = require('body-parser');
 const app = express();
 
 const mongoose = require('mongoose');
@@ -23,6 +24,10 @@ console.log("Connected to the database!");
    });
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
+
+app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static("public"));
 
@@ -78,10 +83,29 @@ app.get("/directors/:name",(req,res)=>{
 });
 
 app.post("/users",(req,res)=>{
-   //let newUser = req.body;
-   //   newUser.id = uuid.v4();
-   //   userList.push(newUser);
-      res.status(201).send("New user has been successfully created");
+   Users.findOne({ Username: req.body.username })
+   .then((user) => {
+     if (user) {
+       return res.status(400).send(req.body.username + 'already exists');
+     } else {
+       Users
+         .create({
+           username: req.body.username,
+           password: req.body.password,
+           email: req.body.email,
+           birthDate: req.body.BirthDate
+         })
+         .then((user) =>{res.status(201).json(user) })
+       .catch((error) => {
+         console.error(error);
+         res.status(500).send('Error: ' + error);
+       })
+     }
+   })
+   .catch((error) => {
+     console.error(error);
+     res.status(500).send('Error: ' + error);
+   });
    }
 );
 
