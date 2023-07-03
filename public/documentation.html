@@ -49,89 +49,92 @@
 						 <td>None</td>
 						 <td>None</td>
 						 <td>An array of JSON objects holding data about the movies structured like this example:<br>
-							&lcub;<br>
-							title:      "The Godfather",<br>
-							year:       1972,<br>
-							director:   ["Francis Ford Coppola"],<br>
-							writers:    ["Mario Puzzo","Francis Ford Coppola"],<br>
-							stars:      ["Marlon Brando","Al Pacino","James Caan"]<br>
-							&rcub;</td>
+							{<br>
+								"genre": {<br>
+								  "name": String,<br>
+								  "description": String<br>
+								},<br>
+								"director": {<br>
+								  "name": String,<br>
+								  "bio": String,<br>
+								  "birthYear": Number,<br>
+								  "deathYear": Number<br>
+								},<br>
+								"_id": String,<br>
+								"title": String (required),<br>
+								"description": String (required)<br>
+								"imageUrl": String,<br>
+								"featured": Boolean<br>
+							 }
+							</td>
 					  </tr>
 					  <tr>
 						<td>Return data (title, year, director, writers, stars) about a single movie by title to the user;</td>
 						<td>/movies/[title]</td>
 						<td>GET</td>
-						<td>:title<br> (title of the requested movie) </td>
+						<td>:title<br> (title of movie) </td>
 						<td>None</td>
 						<td>A JSON object holding data about the movie structured like this example:<br>
-						  &lcub;<br>
-						  title:      "The Godfather",<br>
-						  year:       1972,<br>
-						  director:   ["Francis Ford Coppola"],<br>
-						  writers:    ["Mario Puzzo","Francis Ford Coppola"],<br>
-						  stars:      ["Marlon Brando","Al Pacino","James Caan"]<br>
-						  &rcub;</td>
+						  {<br>
+							"genre": {<br>
+							  "name": String,<br>
+							  "description": String<br>
+							},<br>
+							"director": {<br>
+							  "name": String,<br>
+							  "bio": String,<br>
+							  "birthYear": Number,<br>
+							  "deathYear": Number<br>
+							},<br>
+							"_id": String,<br>
+							"title": String (required),<br>
+							"description": String (required)<br>
+							"imageUrl": String,<br>
+							"featured": Boolean<br>
+						 }
+						</td>
 					 </tr>
 					 <tr>
 						<td>Return data about a genre (description) by name/title (e.g., “Thriller”)</td>
 						<td>/movies/[title]/genre</td>
 						<td>GET</td>
-						<td>title<br> (title of the movie) </td>
+						<td>:title<br> (title of movie) </td>
 						<td>None</td>
 						<td>A JSON object containing the genre name and genre description<br>
-						  &lcub;<br>
-						  genres:     ["Crime","Drama"]<br>
-						  &rcub;</td>
+							{<br>"name" : String,<br>"description" : String<br>}
+						</td>
 					 </tr>
 					 <tr>
-						<td>Return data about a director (bio, birth year, death year) by name</td>
+						<td>Return data about a director (name, bio, birth year, death year) by name</td>
 						<td>/directors/[name]</td>
 						<td>GET</td>
-						<td>name<br>(Name of the director)</td>
+						<td>:name<br>(name of director)</td>
 						<td>None</td>
 						<td>A JSON object containing information about the requested (by name) director structured like this(death year will be empty if still alive):<br>
-						  &lcub;<br>
-						  name:      	"Francis Ford Coppola",<br>
-						  bio:			"As a writer, director, producer and technological pioneer, Coppola has created a body of work that has helped to shape contemporary American cinema."<br>
-						  birthYear: 	1939,<br>
-						  deathYear:   ""<br>
-						  &rcub;</td>
+							{<br>"name": String,<br>"bio": String,<br>"birthYear": Number,<br>"deathYear": Number<br>}
+						</td>
 					 </tr>
 					 <tr>
 						<td>Register new user</td>
 						<td>/users</td>
 						<td>POST</td>
 						<td>None</td>
-						<td>A JSON object holding information about the new user structured like this:<br><br>
-							&lcub;<br>
-							userName:	"Clubberboy69",<br>
-							email:		"example@veryhotmail.com",<br>
-							password:	"12345Spaceballs"<br>
-							birthyear:	1969<br>
-							&rcub;</td>
-						<td>A text message indicating wether the registration was successful or not<br></td>
+						<td>{<br>"username" : String (required),<br>"email" : String (required)<br>"password" : String (required)<br>
+							"birthDate" : Date<br>
+							}</td>
+						<td>{<br>"username": String,<br>"password": String,<br>"email": String,<br>"favoriteMovies": [String],<br>"_id": String,<br>
+							"__v": Number<br>}
+						</td>
 					 </tr>
 					 <tr>
 						<td>Allows users to update their user info (username, password, email, date of birth)</td>
 						<td>/users/update/[username]</td>
 						<td>PUT</td>
 						<td>username</td>
-						<td>user json object in this format<br><br>{
-							"username" : "exampleUser",<br>
-							"password" : "abc123",<br>
-							"email" : "User@email.com",<br>
-							"birthDate" : "2000/01/01"
-					  }</td>
-						<td>Updated user in JSON format:<br>
-							{<br>
-								"_id": "64a2d92e83a1be2b1f1070f0",<br>
-								"username": "exampleUser",<br>
-								"password": "abc123",<br>
-								"email": "User@email.com",<br>
-								"favoriteMovies": [],<br>
-								"__v": 0,<br>
-								"birthDate": "1999-12-31T23:00:00.000Z"<br>
-							 }</td>
+						<td>Key values that are not to be updated can be omitted<br>{<br>"username" : String ,<br>"email" : String <br>"password" : String <br>}
+							"birthDate" : Date<br></td>
+						<td>{<br>"username": String,<br>"password": String,<br>"email": String,<br>"favoriteMovies": [String],<br>"_id": String,<br>
+							"__v": Number<br>}</td>
 					 </tr>
  					 <tr>
 						<td>Allow users to add a movie to their list of favorites</td>
@@ -139,7 +142,11 @@
 						<td>POST</td>
 						<td>username<br>movie title(the movie that will be added to the list)</td>
 						<td>None<br><br></td>
-						<td>A text message indicating that the movie has been added to the favorites list<br></td>
+						<td>updated favoriteMovie list JSON object in form:<br>
+							[<br>
+							"64a08549787be40674eaa709",<br>
+							"64a08789787be40674eaa70a"<br>
+						 ]</td>
 					 </tr>
 					 <tr>
 						<td>Allow users to remove a movie from their list of favorites</td>
@@ -147,7 +154,12 @@
 						<td>DELETE</td>
 						<td>username<br>movie title(the movie that will be removed from the list)</td>
 						<td>None<br><br></td>
-						<td>A text message indicating that the movie has been removed from the favorites list<br></td>
+						<td>updated favoriteMovie list JSON object in form:<br>
+							[<br>
+							"64a08549787be40674eaa709",<br>
+							"64a08789787be40674eaa70a"<br>
+						 ]
+						</td>
 					 </tr>
 					 <tr>
 						<td>Allow existing users to deregister</td>
@@ -155,7 +167,8 @@
 						<td>DELETE</td>
 						<td>username</td>
 						<td>None<br><br></td>
-						<td>A text message indicating that the user is deregistered<br></td>
+						<td>Either a text message indicating that the user is deregistered,<br>
+						or a text message indicating that the user was not found.</td>
 					 </tr>
 					</tbody>
 				</table>
