@@ -1,3 +1,4 @@
+//----------------------------------------------------------------------------------------------------------------Dependencies
 const    express = require("express"),
          morgan = require('morgan'),
          fs = require("fs"),
@@ -5,12 +6,16 @@ const    express = require("express"),
          bodyParser = require('body-parser'),
          mongoose = require('mongoose'),
          Models = require('./models.js');
-         
+
+//----------------------------------------------------------------------------------------------------------------Declarations
 const app = express();
 
 const Movies = Models.Movie;
 const Users = Models.User;
 
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
+
+//---------------------------------------------------------------------------------------------------------Database connection
 mongoose
 .connect("mongodb://127.0.0.1:27017/movie_api", {
 useNewUrlParser: true,
@@ -23,7 +28,7 @@ console.log("Connected to the database!");
    console.error("Failed to connect to the database:", err);
    });
 
-const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
+
 
 //-----------------------------------------------------------------------------------------------------------------Middleware
 app.use(express.json());
@@ -199,6 +204,7 @@ app.delete("/users/:username",((req,res)=>{
    res.status(200).send("I will make him an offer he can`t refuse...");
  });
 
+//--------------------------------------------------------------------------------------------------------------------Server 
  app.listen(8080, () => {
    console.log("Your app is listening on port 8080.");
  });
