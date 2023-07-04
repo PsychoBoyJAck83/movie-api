@@ -93,14 +93,14 @@ app.get("/directors/:name",(req,res)=>{
 });
 
 app.post("/users",(req,res) => {
-   Users.findOne({ username: req.body.username })
+   Users.findOne({ Username: req.body.Username })
    .then((user) => {
      if (user) {
-       return res.status(400).send(req.body.username + ' already exists');
+       return res.status(400).send(req.body.Username + ' already exists');
      } else {
        Users
          .create({
-           username: req.body.username,
+           Username: req.body.Username,
            password: req.body.password,
            email: req.body.email,
            birthDate: req.body.BirthDate
@@ -120,10 +120,10 @@ app.post("/users",(req,res) => {
 );
 
 app.put("/users/update/:username",((req,res)=>{
-   Users.findOneAndUpdate({ username: req.params.username },
+   Users.findOneAndUpdate({ Username: req.params.username },
       {
-         username: req.body.username,
-         password: req.body.password,
+         Username: req.body.Username,
+         Password: req.body.Password,
          email: req.body.email,
          birthDate: req.body.birthDate
       },{returnDocument:'after'})
@@ -146,7 +146,7 @@ app.post("/users/:username/favorites/:movieID",((req,res)=>{
             if(!movie)
                res.status(400).send("Movie ID " + req.params.movieID +" is unknown.");
             else {
-               Users.findOneAndUpdate({username : req.params.username},{$addToSet: {favoriteMovies : req.params.movieID}},{returnDocument:'after'})
+               Users.findOneAndUpdate({Username : req.params.username},{$addToSet: {favoriteMovies : req.params.movieID}},{returnDocument:'after'})
                   .then((user) => {
                      if(!user)
                         res.status(400).send("User " + req.params.username +" is unknown.");
@@ -168,7 +168,7 @@ app.delete("/users/:username/favorites/:movieID",((req,res)=>{
             if(!movie)
                res.status(400).send("Movie ID " + req.params.movieID +" is unknown.");
             else {
-               Users.findOneAndUpdate({username : req.params.username},{$pull: {favoriteMovies : req.params.movieID}},{returnDocument:'after'})
+               Users.findOneAndUpdate({Username : req.params.username},{$pull: {favoriteMovies : req.params.movieID}},{returnDocument:'after'})
                   .then((user) => {
                      if(!user)
                         res.status(400).send("User " + req.params.username +" is unknown.");
@@ -189,7 +189,7 @@ app.delete("/users/:username/favorites/:movieID",((req,res)=>{
 }));
 
 app.delete("/users/:username",((req,res)=>{
-   Users.findOneAndDelete({username : req.params.username})
+   Users.findOneAndDelete({Username : req.params.username})
       .then( (user) => {
          if(!user)
             res.status(400).send("User " + req.params.username + " not found!");
