@@ -37,6 +37,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 let auth = require('./auth')(app);
 
+const passport = require('passport');
+require('./passport');
+
 app.use(express.static("public"));
 
 app.use(morgan('combined', {stream: accessLogStream}));
@@ -48,7 +51,7 @@ app.use((err, req, res, next) => {
 
 //-----------------------------------------------------------------------------------------------------------------Endpoints 
 
- app.get("/movies", (req, res) => {
+ app.get("/movies",passport.authenticate('jwt', { session: false }), (req, res) => {
    Movies.find({})
       .then((movies) => {
          res.status(200).json(movies);
@@ -101,9 +104,9 @@ app.post("/users",(req,res) => {
        Users
          .create({
            Username: req.body.Username,
-           password: req.body.password,
+           Password: req.body.Password,
            email: req.body.email,
-           birthDate: req.body.BirthDate
+           birthDate: req.body.birthDate
          })
          .then((user) =>{res.status(201).json(user) })
        .catch((error) => {
