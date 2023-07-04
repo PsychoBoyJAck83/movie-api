@@ -337,3 +337,7 @@
 ::ffff:127.0.0.1 - - [04/Jul/2023:22:22:29 +0000] "GET /movies HTTP/1.1" 401 - "-" "PostmanRuntime/7.32.3"
 ::ffff:127.0.0.1 - - [04/Jul/2023:22:31:59 +0000] "GET /movies HTTP/1.1" 401 - "-" "Thunder Client (https://www.thunderclient.com)"
 ::ffff:127.0.0.1 - - [04/Jul/2023:22:32:34 +0000] "GET /movies?Username=HaSolo&Password=12345 HTTP/1.1" 401 - "-" "Thunder Client (https://www.thunderclient.com)"
+::ffff:127.0.0.1 - - [04/Jul/2023:23:05:58 +0000] "GET /movies HTTP/1.1" 401 - "-" "Thunder Client (https://www.thunderclient.com)"
+::ffff:127.0.0.1 - - [04/Jul/2023:23:11:22 +0000] "GET /movies HTTP/1.1" 401 - "-" "Thunder Client (https://www.thunderclient.com)"
+::ffff:127.0.0.1 - - [04/Jul/2023:23:11:57 +0000] "GET /login?Username=HaSolo&Password=12345 HTTP/1.1" 404 144 "-" "Thunder Client (https://www.thunderclient.com)"
+::ffff:127.0.0.1 - - [04/Jul/2023:23:16:26 +0000] "POST /users HTTP/1.1" 201 162 "-" "Thunder Client (https://www.thunderclient.com)"
