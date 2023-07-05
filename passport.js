@@ -13,11 +13,13 @@ passport.use(new LocalStrategy({
 }, (username, password, callback) => {
   console.log(username + '  ' + password);
   Users.findOne
-  ({ Username: username }, (error, user) => {
-    if (error) {
+  ({ Username: username })
+  .then((/*error, */user) => {
+    console.log("User in passport: "+ user)
+   /* if (error) {
       console.log(error);
       return callback(error);
-    }
+    }*/
 
     if (!user) {
       console.log('incorrect username');
@@ -26,6 +28,9 @@ passport.use(new LocalStrategy({
 
     console.log('finished');
     return callback(null, user);
+  })
+  .catch((error) => {
+    console.log(error);
   });
 }));
 
