@@ -140,10 +140,11 @@ app.post("/users",[
 );
 
 app.put("/users/update/:username", passport.authenticate('jwt', { session: false }),((req,res)=>{
+   let hashedPassword = Users.hashPassword(req.body.Password);
    Users.findOneAndUpdate({ Username: req.params.username },
       {
          Username: req.body.Username,
-         Password: req.body.Password,
+         Password: hashedPassword,
          email: req.body.email,
          birthDate: req.body.birthDate
       },{returnDocument:'after'})
