@@ -5,7 +5,8 @@ const    express = require("express"),
          path = require("path"),
          bodyParser = require('body-parser'),
          mongoose = require('mongoose'),
-         Models = require('./models.js');
+         Models = require('./models.js'),
+         cors = require('cors');
 
 //----------------------------------------------------------------------------------------------------------------Declarations
 const app = express();
@@ -34,8 +35,6 @@ console.log("Connected to the database!");
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-const cors = require('cors');
 app.use(cors());
 
 let auth = require('./auth')(app);
