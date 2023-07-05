@@ -98,7 +98,20 @@ app.get("/directors/:name", passport.authenticate('jwt', { session: false }), (r
       }))
 });
 
-app.post("/users",(req,res) => {
+app.post("/users",[
+   check("Username","Username needs to be at least 6 characters long.").isLength({min: 6}),
+   check("Username","Username must consist of only alphanumerical characters.").isAlphanumeric(),
+   check("Password","Password needs to be at least 8 characters long.").isLength({min: 8}),
+   check("email","Email is required.").not().isEmpty(),
+   check("email","Invalid email address.").isEmail()],
+   check("birthDate","Invalid date format.").isDate(),
+(req,res) => {
+   let errors = validationResult(req);
+
+   if (!errors.isEmpty()) {
+     return res.status(422).json({ errors: errors.array() });
+   }
+
    let hashedPassword = Users.hashPassword(req.body.Password);
    Users.findOne({ Username: req.body.Username })
    .then((user) => {
