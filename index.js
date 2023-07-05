@@ -62,7 +62,7 @@ app.use((err, req, res, next) => {
       });
    });
 
-app.get("/movies/:title", (req, res) => {
+app.get("/movies/:title", passport.authenticate('jwt', { session: false }), (req, res) => {
    Movies.findOne({title: req.params.title})
       .then((movie) => {
          res.status(200).json(movie);
@@ -73,7 +73,7 @@ app.get("/movies/:title", (req, res) => {
       });   
 });
 
-app.get("/movies/:title/genre", (req, res) => {
+app.get("/movies/:title/genre", passport.authenticate('jwt', { session: false }), (req, res) => {
    Movies.findOne({title: req.params.title})
       .then((movie) => {
          res.status(200).json(movie.genre);
@@ -84,7 +84,7 @@ app.get("/movies/:title/genre", (req, res) => {
       }); 
  });
 
-app.get("/directors/:name",(req,res)=>{
+app.get("/directors/:name", passport.authenticate('jwt', { session: false }), (req,res)=>{
    Movies.findOne({"director.name":req.params.name})
       .then((movie) => {
          res.status(200).json(movie.director);
@@ -95,7 +95,7 @@ app.get("/directors/:name",(req,res)=>{
       }))
 });
 
-app.post("/users",(req,res) => {
+app.post("/users", passport.authenticate('jwt', { session: false }),(req,res) => {
    Users.findOne({ Username: req.body.Username })
    .then((user) => {
      if (user) {
@@ -122,7 +122,7 @@ app.post("/users",(req,res) => {
    }
 );
 
-app.put("/users/update/:username",((req,res)=>{
+app.put("/users/update/:username", passport.authenticate('jwt', { session: false }),((req,res)=>{
    Users.findOneAndUpdate({ Username: req.params.username },
       {
          Username: req.body.Username,
@@ -140,7 +140,7 @@ app.put("/users/update/:username",((req,res)=>{
 
 }));
 
-app.post("/users/:username/favorites/:movieID",((req,res)=>{
+app.post("/users/:username/favorites/:movieID", passport.authenticate('jwt', { session: false }), ((req,res)=>{
    if(req.params.movieID.length != 24)
       res.status(400).send("invalid movieID");
    else{
@@ -162,7 +162,7 @@ app.post("/users/:username/favorites/:movieID",((req,res)=>{
 }));
 
 
-app.delete("/users/:username/favorites/:movieID",((req,res)=>{
+app.delete("/users/:username/favorites/:movieID", passport.authenticate('jwt', { session: false }), ((req,res)=>{
    if(req.params.movieID.length != 24)
       res.status(400).send("invalid movieID");
    else{
@@ -191,7 +191,7 @@ app.delete("/users/:username/favorites/:movieID",((req,res)=>{
    }
 }));
 
-app.delete("/users/:username",((req,res)=>{
+app.delete("/users/:username", passport.authenticate('jwt', { session: false }), ((req,res)=>{
    Users.findOneAndDelete({Username : req.params.username})
       .then( (user) => {
          if(!user)
@@ -205,7 +205,7 @@ app.delete("/users/:username",((req,res)=>{
       })
 }));
 
- app.get("/", (req, res) => {
+ app.get("/",  passport.authenticate('jwt', { session: false }), (req, res) => {
    res.status(200).send("I will make him an offer he can`t refuse...");
  });
 
