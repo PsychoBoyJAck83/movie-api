@@ -146,7 +146,15 @@ app.post("/users",[
    }
 );
 
-app.put("/users/update/:username", passport.authenticate('jwt', { session: false }),((req,res)=>{
+app.put("/users/update/:username",
+   passport.authenticate('jwt', { session: false }),[
+   check("Username","Username needs to be at least 6 characters long.").isLength({min: 6}),
+   check("Username","Username must consist of only alphanumerical characters.").isAlphanumeric(),
+   check("Password","Password needs to be at least 8 characters long.").isLength({min: 8}),
+   check("email","Email is required.").not().isEmpty(),
+   check("email","Invalid email address.").isEmail()],
+   check("birthDate","Invalid date format.").isDate(),
+   ((req,res)=>{
    let hashedPassword = Users.hashPassword(req.body.Password);
 
    Users.findOneAndUpdate({ Username: req.params.username },
