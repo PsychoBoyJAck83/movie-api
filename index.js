@@ -155,6 +155,7 @@ app.put("/users/update/:username",
    check("email","Invalid email address.").isEmail(),
    check("birthDate","Invalid date format.").isDate()],
    ((req,res)=>{
+      let errors = validationResult(req);
       if (!errors.isEmpty()) {
          return res.status(422).json({ errors: errors.array() });
       }
