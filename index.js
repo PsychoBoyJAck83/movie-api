@@ -29,7 +29,7 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {f
    });*/
 
 mongoose
-   .connect("process.env.CONNECTION_URI", {
+   .connect(process.env.CONNECTION_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,})
       .then(() => {
