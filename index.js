@@ -155,23 +155,25 @@ app.put("/users/update/:username",
    check("email","Invalid email address.").isEmail(),
    check("birthDate","Invalid date format.").isDate()],
    ((req,res)=>{
-   let hashedPassword = Users.hashPassword(req.body.Password);
+      if (!errors.isEmpty()) {
+         return res.status(422).json({ errors: errors.array() });
+      }
+      let hashedPassword = Users.hashPassword(req.body.Password);
 
-   Users.findOneAndUpdate({ Username: req.params.username },
-      {
-         Username: req.body.Username,
-         Password: hashedPassword,
-         email: req.body.email,
-         birthDate: req.body.birthDate
-      },{returnDocument:'after'})
-      .then((user) => {
-         res.status(200).json(user);
-      })
-      .catch((error) => {
-         console.error(error);
-         res.status(500).send('Error: ' + error);
-      })
-
+      Users.findOneAndUpdate({ Username: req.params.username },
+         {
+            Username: req.body.Username,
+            Password: hashedPassword,
+            email: req.body.email,
+            birthDate: req.body.birthDate
+         },{returnDocument:'after'})
+         .then((user) => {
+            res.status(200).json(user);
+         })
+         .catch((error) => {
+            console.error(error);
+            res.status(500).send('Error: ' + error);
+         })
 }));
 
 app.post("/users/:username/favorites/:movieID", passport.authenticate('jwt', { session: false }), ((req,res)=>{
