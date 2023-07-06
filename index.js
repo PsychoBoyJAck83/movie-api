@@ -177,16 +177,16 @@ app.put("/users/update/:username",
          })
 }));
 
-app.post("/users/:username/favorites/:movieID", passport.authenticate('jwt', { session: false }), ((req,res)=>{
-   if(req.params.movieID.length != 24)
-      res.status(400).send("invalid movieID");
+app.post("/users/:username/favorites/:movieId", passport.authenticate('jwt', { session: false }), ((req,res)=>{
+   if(req.params.movieId.length != 24)
+      res.status(400).send("invalid movieId");
    else{
-      Movies.findById(req.params.movieID)
+      Movies.findById(req.params.movieId)
          .then((movie) => {
             if(!movie)
-               res.status(400).send("Movie ID " + req.params.movieID +" is unknown.");
+               res.status(400).send("Movie ID " + req.params.movieId +" is unknown.");
             else {
-               Users.findOneAndUpdate({Username : req.params.username},{$addToSet: {favoriteMovies : req.params.movieID}},{returnDocument:'after'})
+               Users.findOneAndUpdate({Username : req.params.username},{$addToSet: {favoriteMovies : req.params.movieId}},{returnDocument:'after'})
                   .then((user) => {
                      if(!user)
                         res.status(400).send("User " + req.params.username +" is unknown.");
@@ -199,16 +199,16 @@ app.post("/users/:username/favorites/:movieID", passport.authenticate('jwt', { s
 }));
 
 
-app.delete("/users/:username/favorites/:movieID", passport.authenticate('jwt', { session: false }), ((req,res)=>{
-   if(req.params.movieID.length != 24)
-      res.status(400).send("invalid movieID");
+app.delete("/users/:username/favorites/:movieId", passport.authenticate('jwt', { session: false }), ((req,res)=>{
+   if(req.params.movieId.length != 24)
+      res.status(400).send("invalid movieId");
    else{
-      Movies.findById(req.params.movieID)
+      Movies.findById(req.params.movieId)
          .then((movie) => {
             if(!movie)
-               res.status(400).send("Movie ID " + req.params.movieID +" is unknown.");
+               res.status(400).send("Movie ID " + req.params.movieId +" is unknown.");
             else {
-               Users.findOneAndUpdate({Username : req.params.username},{$pull: {favoriteMovies : req.params.movieID}},{returnDocument:'after'})
+               Users.findOneAndUpdate({Username : req.params.username},{$pull: {favoriteMovies : req.params.movieId}},{returnDocument:'after'})
                   .then((user) => {
                      if(!user)
                         res.status(400).send("User " + req.params.username +" is unknown.");
