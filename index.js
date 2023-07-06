@@ -231,7 +231,7 @@ app.delete("/users/:username", passport.authenticate('jwt', { session: false }),
       })
 }));
 
- app.get("/",  passport.authenticate('jwt', { session: false }), (req, res) => {
+ app.get("/", (req, res) => {
    res.status(200).send("I will make him an offer he can`t refuse...");
  });
 
