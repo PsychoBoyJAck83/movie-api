@@ -18,7 +18,7 @@ const Users = Models.User;
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
 
 //---------------------------------------------------------------------------------------------------------Database connection
-/*mongoose
+mongoose
    .connect("mongodb://127.0.0.1:27017/movie_api", {
       useNewUrlParser: true,
       useUnifiedTopology: true,})
@@ -26,7 +26,7 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {f
          console.log("Connected to the database!");})
       .catch((err) => {
          console.error("Failed to connect to the database:", err);
-   });*/
+   });
 
 mongoose
    .connect(process.env.CONNECTION_URI, {
@@ -36,7 +36,7 @@ mongoose
          console.log("Connected to the database!");})
       .catch((err) => {
          console.error("Failed to connect to the database:", err);
-   });   
+   });
 
 
 //-----------------------------------------------------------------------------------------------------------------Middleware
