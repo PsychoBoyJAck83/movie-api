@@ -29,7 +29,7 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {f
    });*/
 
 mongoose
-   .connect("mongodb+srv://georgitsistheodoros:<password>@theosdb.saonydt.mongodb.net/?retryWrites=true&w=majority", {
+   .connect("process.env.CONNECTION_URI", {
       useNewUrlParser: true,
       useUnifiedTopology: true,})
       .then(() => {
