@@ -18,18 +18,25 @@ const Users = Models.User;
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
 
 //---------------------------------------------------------------------------------------------------------Database connection
-mongoose
-.connect("mongodb://127.0.0.1:27017/movie_api", {
-useNewUrlParser: true,
-useUnifiedTopology: true,
-})
-.then(() => {
-console.log("Connected to the database!");
-})
-.catch((err) => {
-   console.error("Failed to connect to the database:", err);
-   });
+/*mongoose
+   .connect("mongodb://127.0.0.1:27017/movie_api", {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,})
+      .then(() => {
+         console.log("Connected to the database!");})
+      .catch((err) => {
+         console.error("Failed to connect to the database:", err);
+   });*/
 
+mongoose
+   .connect("mongodb+srv://georgitsistheodoros:<password>@theosdb.saonydt.mongodb.net/?retryWrites=true&w=majority", {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,})
+      .then(() => {
+         console.log("Connected to the database!");})
+      .catch((err) => {
+         console.error("Failed to connect to the database:", err);
+   });   
 
 
 //-----------------------------------------------------------------------------------------------------------------Middleware
