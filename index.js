@@ -135,6 +135,10 @@ app.post(
       "Username must consist of only alphanumerical characters."
     ).isAlphanumeric(),
     check(
+      "Username",
+      "Username needs to be at most 20 characters long."
+    ).isAlphanumeric(),
+    check(
       "Password",
       "Password needs to be at least 8 characters long."
     ).isLength({ min: 8 }),
