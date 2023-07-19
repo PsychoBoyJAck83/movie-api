@@ -234,7 +234,7 @@ app.put(
   "/users/update/password/:username",
   passport.authenticate("jwt", { session: false }),
   [
-    check("NewPassword", "Password needs to be at least 8 characters long.")
+    check("newPassword", "Password needs to be at least 8 characters long.")
       .isLength({ min: 8 })
       .not()
       .isEmpty(),
