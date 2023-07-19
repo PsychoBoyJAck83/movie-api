@@ -260,7 +260,12 @@ app.put(
       );*/
 
     Users.findOne({ Username: req.params.username }).then((user) => {
-      return res.send("user.Password "user.Password + "oldPasswordHashed :" + oldPasswordHashed);
+      return res.send(
+        "user.Password " +
+          user.Password +
+          "oldPasswordHashed :" +
+          oldPasswordHashed
+      );
       if (user.Password === oldPasswordHashed) {
         Users.findOneAndUpdate(
           { Username: req.params.username },
