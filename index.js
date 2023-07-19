@@ -214,26 +214,12 @@ app.put(
       return res.status(422).json({ errors: errors.array() });
     }
     let data = req.body;
-    if (req.body.Password)
-      data.Password = Users.hashPassword(req.body.Password);
-    //let hashedPassword = "";
-    /*if (req.body.Username)
-      data.Username = req.body.Username;
-    if (req.body.Password)
-      data.Password = Users.hashPassword(req.body.Password);
-    if(req.body.email)
-      data.email = */
+    /*if (req.body.Password)
+      data.Password = Users.hashPassword(req.body.Password);*/
 
-    Users.findOneAndUpdate(
-      { Username: req.params.username },
-      data,
-      /*{
-        Username: req.body.Username,
-        Password: hashedPassword,
-        email: req.body.email,
-        birthDate: req.body.birthDate,
-      }*/ { returnDocument: "after" }
-    )
+    Users.findOneAndUpdate({ Username: req.params.username }, data, {
+      returnDocument: "after",
+    })
       .then((user) => {
         res.status(200).json(user);
       })
@@ -241,6 +227,50 @@ app.put(
         console.error(error);
         res.status(500).send("Error: " + error);
       });
+  }
+);
+
+app.put(
+  "/users/update/password/:username",
+  passport.authenticate("jwt", { session: false }),
+  [
+    check("Password", "Password needs to be at least 8 characters long.")
+      .isLength({ min: 8 })
+      .optional({ checkFalsy: true }),
+    check("email", "Email is required.")
+      .not()
+      .isEmpty()
+      .optional({ checkFalsy: true }),
+    check("email", "Invalid email address.")
+      .isEmail()
+      .optional({ checkFalsy: true }),
+    check("birthDate", "Invalid date format.")
+      .isDate()
+      .optional({ checkFalsy: true }),
+  ],
+  (req, res) => {
+    let errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+    let oldPasswordHashed = Users.hashPassword(req.body.oldPassword);
+    let newPasswordHashed = Users.hashPassword(req.body.newPassword);
+    Users.findOne({ Username: req.params.username }).then((user) => {
+      if (user.Password === oldPasswordHashed) {
+        Users.findOneAndUpdate(
+          { Username: req.params.username },
+          { Password: newPasswordHashed },
+          { returnDocument: "after" }
+        )
+          .then((user) => {
+            res.status(200).json(user);
+          })
+          .catch((error) => {
+            console.error(error);
+            res.status(500).send("Error: " + error);
+          });
+      }
+    });
   }
 );
 
