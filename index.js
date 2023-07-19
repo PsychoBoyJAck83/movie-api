@@ -197,7 +197,6 @@ app.put(
       "Password",
       "Password needs to be at least 8 characters long."
     ).isLength({ min: 8 }),
-    check("email", "Email is required.").not().isEmpty(),
     check("email", "Invalid email address.").isEmail(),
     check("birthDate", "Invalid date format.").isDate(),
   ],
