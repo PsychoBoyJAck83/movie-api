@@ -232,8 +232,8 @@ app.put(
 
 app.put(
   "/users/update/password/:username", //,
-  //passport.authenticate("jwt", { session: false }) /*,
-  /* [
+  passport.authenticate("jwt", { session: false }),
+  [
     check("oldPassword", "new password needs to be at least 8 characters long.")
       .isLength({ min: 8 })
       .not()
@@ -242,11 +242,12 @@ app.put(
       .isLength({ min: 8 })
       .not()
       .isEmpty(),
-  ]*/ (req, res) => {
-    /*let errors = validationResult(req);
+  ],
+  (req, res) => {
+    let errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
-    }*/
+    }
     let oldPasswordHashed = Users.hashPassword(req.body.oldPassword);
     let newPasswordHashed = Users.hashPassword(req.body.newPassword);
 
