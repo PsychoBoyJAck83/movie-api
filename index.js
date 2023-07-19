@@ -218,7 +218,7 @@ app.put(
     Users.findOneAndUpdate(
       { Username: req.params.username },
       {
-        Username: req.body.Username,
+        //Username: req.body.Username,
         Password: hashedPassword,
         email: req.body.email,
         birthDate: req.body.birthDate,
