@@ -268,7 +268,7 @@ app.put(
           oldPasswordHashed +
           "\nuser.Password ()hashed:\n" +
           user.Password +
-          "DeathStar hashed:\n" +
+          "\nDeathStar hashed:\n" +
           DeathStar
       );
       if (user.Password === oldPasswordHashed) {
