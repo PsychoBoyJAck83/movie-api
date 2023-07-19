@@ -244,10 +244,10 @@ app.put(
       .isEmpty(),
   ],
   (req, res) => {
-    let errors = validationResult(req);
+    /*let errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
-    }
+    }*/
     let oldPasswordHashed = Users.hashPassword(req.body.oldPassword);
     return res.status(400).send("old password", oldPasswordHashed);
     //let oldPasswordHashed = Users.hashPassword(req.body.oldPassword);
