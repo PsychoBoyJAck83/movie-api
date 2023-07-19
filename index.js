@@ -250,17 +250,17 @@ app.put(
     }
     let oldPasswordHashed = Users.hashPassword(req.body.oldPassword);
     let newPasswordHashed = Users.hashPassword(req.body.newPassword);
-    return res
+    /*return res
       .status(400)
       .send(
         "old password: " +
           oldPasswordHashed +
           "new password " +
-          newPasswordHashed /*, oldPasswordHashed*/
-      );
-    //let oldPasswordHashed = Users.hashPassword(req.body.oldPassword);
+          newPasswordHashed /*, oldPasswordHashed
+      );*/
 
     Users.findOne({ Username: req.params.username }).then((user) => {
+      return res.send(user);
       if (user.Password === oldPasswordHashed) {
         Users.findOneAndUpdate(
           { Username: req.params.username },
