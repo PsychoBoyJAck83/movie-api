@@ -249,9 +249,16 @@ app.put(
       return res.status(422).json({ errors: errors.array() });
     }
     let oldPasswordHashed = Users.hashPassword(req.body.oldPassword);
-    return res.status(400).send(req.body.oldPassword /*, oldPasswordHashed*/);
-    //let oldPasswordHashed = Users.hashPassword(req.body.oldPassword);
     let newPasswordHashed = Users.hashPassword(req.body.newPassword);
+    return res
+      .status(400)
+      .send(
+        "old password: ",
+        req.body.oldPassword,
+        "new password",
+        req.body.newPassword /*, oldPasswordHashed*/
+      );
+    //let oldPasswordHashed = Users.hashPassword(req.body.oldPassword);
 
     Users.findOne({ Username: req.params.username }).then((user) => {
       if (user.Password === oldPasswordHashed) {
