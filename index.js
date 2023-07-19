@@ -231,13 +231,9 @@ app.put(
 );
 
 app.put(
-  "/users/update/password/:username",
+  "/users/update/password",
   passport.authenticate("jwt", { session: false }),
   [
-    check("oldPassword", "old password needs to be at least 8 characters long.")
-      .isLength({ min: 8 })
-      .not()
-      .isEmpty(),
     check("newPassword", "new Password needs to be at least 8 characters long.")
       .isLength({ min: 8 })
       .not()
@@ -248,44 +244,27 @@ app.put(
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
-    let oldPasswordHashed = Users.hashPassword(req.body.oldPassword);
-    let newPasswordHashed = Users.hashPassword(req.body.newPassword);
-    let DeathStar = Users.hashPassword("DeathStar");
-    /*return res
-      .status(400)
-      .send(
-        "old password: " +
-          oldPasswordHashed +
-          "new password " +
-          newPasswordHashed /*, oldPasswordHashed
-      );*/
-
-    Users.findOne({ Username: req.params.username }).then((user) => {
-      return res.send(
-        "req.body.oldPassword\n" +
-          req.body.oldPassword +
-          "\noldPasswordHashed :\n" +
-          oldPasswordHashed +
-          "\nuser.Password ()hashed:\n" +
-          user.Password +
-          "\nDeathStar hashed:\n" +
-          DeathStar
-      );
-      if (user.Password === oldPasswordHashed) {
-        Users.findOneAndUpdate(
-          { Username: req.params.username },
-          { Password: newPasswordHashed },
-          { returnDocument: "after" }
-        )
-          .then((user) => {
-            res.status(200).json(user);
-          })
-          .catch((error) => {
-            console.error(error);
-            res.status(500).send("Error: " + error);
-          });
+    passport.authenticate("local", { session: false }, (error, user, info) => {
+      if (error || !user) {
+        return res.status(400).json({
+          message: "Incorrect username or password!",
+        });
       }
     });
+    let newPasswordHashed = Users.hashPassword(req.body.newPassword);
+
+    Users.findOneAndUpdate(
+      { Username: req.body.Username },
+      { Password: newPasswordHashed },
+      { returnDocument: "after" }
+    )
+      .then((user) => {
+        res.status(200).json(user);
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send("Error: " + error);
+      });
   }
 );
 
