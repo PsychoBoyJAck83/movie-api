@@ -250,6 +250,7 @@ app.put(
     }
     let oldPasswordHashed = Users.hashPassword(req.body.oldPassword);
     let newPasswordHashed = Users.hashPassword(req.body.newPassword);
+
     Users.findOne({ Username: req.params.username }).then((user) => {
       if (user.Password === oldPasswordHashed) {
         Users.findOneAndUpdate(
@@ -358,7 +359,7 @@ app.delete(
 );
 
 app.get("/", (req, res) => {
-  res.status(200).send("I will make him an offer he can`t refuse.....");
+  res.status(200).send("I will make him an offer he can`t refuse...");
 });
 
 //--------------------------------------------------------------------------------------------------------------------Server
