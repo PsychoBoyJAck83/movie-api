@@ -252,6 +252,7 @@ app.put(
       }
     });
     let newPasswordHashed = Users.hashPassword(req.body.newPassword);
+    return res.send(req.body.Username);
 
     Users.findOneAndUpdate(
       { Username: req.body.Username },
