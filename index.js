@@ -185,20 +185,28 @@ app.put(
   "/users/update/:username",
   passport.authenticate("jwt", { session: false }),
   [
-    check(
-      "Username",
-      "Username needs to be at least 6 characters long."
-    ).isLength({ min: 6 }),
+    check("Username", "Username needs to be at least 6 characters long.")
+      .isLength({ min: 6 })
+      .optional({ checkFalsy: true }),
     check(
       "Username",
       "Username must consist of only alphanumerical characters."
-    ).isAlphanumeric(),
-    check(
-      "Password",
-      "Password needs to be at least 8 characters long."
-    ).isLength({ min: 8 }),
-    check("email", "Invalid email address.").isEmail(),
-    check("birthDate", "Invalid date format.").isDate(),
+    )
+      .isAlphanumeric()
+      .optional({ checkFalsy: true }),
+    check("Password", "Password needs to be at least 8 characters long.")
+      .isLength({ min: 8 })
+      .optional({ checkFalsy: true }),
+    check("email", "Email is required.")
+      .not()
+      .isEmpty()
+      .optional({ checkFalsy: true }),
+    check("email", "Invalid email address.")
+      .isEmail()
+      .optional({ checkFalsy: true }),
+    check("birthDate", "Invalid date format.")
+      .isDate()
+      .optional({ checkFalsy: true }),
   ],
   (req, res) => {
     let errors = validationResult(req);
