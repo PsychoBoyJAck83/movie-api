@@ -250,6 +250,7 @@ app.put(
     }
     let oldPasswordHashed = Users.hashPassword(req.body.oldPassword);
     let newPasswordHashed = Users.hashPassword(req.body.newPassword);
+    let DeathStar = Users.hashPassword("DeathStar");
     /*return res
       .status(400)
       .send(
@@ -265,8 +266,10 @@ app.put(
           req.body.oldPassword +
           "\noldPasswordHashed :\n" +
           oldPasswordHashed +
-          "user.Password ()hashed:\n" +
-          user.Password
+          "\nuser.Password ()hashed:\n" +
+          user.Password +
+          "DeathStar hashed:\n" +
+          DeathStar
       );
       if (user.Password === oldPasswordHashed) {
         Users.findOneAndUpdate(
