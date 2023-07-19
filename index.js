@@ -249,7 +249,7 @@ app.put(
       return res.status(422).json({ errors: errors.array() });
     }
     let oldPasswordHashed = Users.hashPassword(req.body.oldPassword);
-    return res.status(400).send("old password" /*, oldPasswordHashed*/);
+    return res.status(400).send(req.body.oldPassword /*, oldPasswordHashed*/);
     //let oldPasswordHashed = Users.hashPassword(req.body.oldPassword);
     let newPasswordHashed = Users.hashPassword(req.body.newPassword);
 
