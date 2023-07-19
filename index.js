@@ -261,9 +261,9 @@ app.put(
 
     Users.findOne({ Username: req.params.username }).then((user) => {
       return res.send(
-        "user.Password " +
+        "user.Password :\n" +
           user.Password +
-          "oldPasswordHashed :" +
+          "\noldPasswordHashed :\n" +
           oldPasswordHashed
       );
       if (user.Password === oldPasswordHashed) {
