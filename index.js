@@ -213,17 +213,26 @@ app.put(
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
-    let hashedPassword = Users.hashPassword(req.body.Password);
+    let data = req.body;
+    if (req.body.Password)
+      data.Password = Users.hashPassword(req.body.Password);
+    //let hashedPassword = "";
+    /*if (req.body.Username)
+      data.Username = req.body.Username;
+    if (req.body.Password)
+      data.Password = Users.hashPassword(req.body.Password);
+    if(req.body.email)
+      data.email = */
 
     Users.findOneAndUpdate(
       { Username: req.params.username },
-      {
-        //Username: req.body.Username,
+      data,
+      /*{
+        Username: req.body.Username,
         Password: hashedPassword,
         email: req.body.email,
         birthDate: req.body.birthDate,
-      },
-      { returnDocument: "after" }
+      }*/ { returnDocument: "after" }
     )
       .then((user) => {
         res.status(200).json(user);
