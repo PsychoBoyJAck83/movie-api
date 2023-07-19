@@ -234,19 +234,10 @@ app.put(
   "/users/update/password/:username",
   passport.authenticate("jwt", { session: false }),
   [
-    check("Password", "Password needs to be at least 8 characters long.")
+    check("NewPassword", "Password needs to be at least 8 characters long.")
       .isLength({ min: 8 })
-      .optional({ checkFalsy: true }),
-    check("email", "Email is required.")
       .not()
-      .isEmpty()
-      .optional({ checkFalsy: true }),
-    check("email", "Invalid email address.")
-      .isEmail()
-      .optional({ checkFalsy: true }),
-    check("birthDate", "Invalid date format.")
-      .isDate()
-      .optional({ checkFalsy: true }),
+      .isEmpty(),
   ],
   (req, res) => {
     let errors = validationResult(req);
