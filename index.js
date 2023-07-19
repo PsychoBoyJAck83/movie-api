@@ -254,9 +254,9 @@ app.put(
       .status(400)
       .send(
         "old password: " +
-          req.body.oldPassword +
-          "new password" +
-          req.body.newPassword /*, oldPasswordHashed*/
+          oldPasswordHashed +
+          "new password " +
+          newPasswordHashed /*, oldPasswordHashed*/
       );
     //let oldPasswordHashed = Users.hashPassword(req.body.oldPassword);
 
