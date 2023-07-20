@@ -214,8 +214,8 @@ app.put(
       return res.status(422).json({ errors: errors.array() });
     }
     let data = req.body;
-    /*if (req.body.Password)
-      data.Password = Users.hashPassword(req.body.Password);*/
+    if (req.body.Password)
+      data.Password = Users.hashPassword(req.body.Password);
 
     Users.findOneAndUpdate({ Username: req.params.username }, data, {
       returnDocument: "after",
