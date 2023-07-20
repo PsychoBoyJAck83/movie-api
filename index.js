@@ -244,7 +244,7 @@ app.put(
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
-    res.send(req);
+    res.send("HAHAHA");
     passport.authenticate("local", { session: false }, (error, user, info) => {
       if (error || !user) {
         return res.status(400).json({
@@ -253,8 +253,6 @@ app.put(
       }
     });
     let newPasswordHashed = Users.hashPassword(req.body.newPassword);
-    return res.send(req.body.Username);
-
     Users.findOneAndUpdate(
       { Username: req.body.Username },
       { Password: newPasswordHashed },
