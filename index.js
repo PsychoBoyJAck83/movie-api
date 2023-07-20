@@ -251,7 +251,7 @@ app.put(
           message: "Incorrect username or password!",
         });
       }
-    });
+    })(req, res);
     let newPasswordHashed = Users.hashPassword(req.body.newPassword);
     Users.findOneAndUpdate(
       { Username: req.body.Username },
