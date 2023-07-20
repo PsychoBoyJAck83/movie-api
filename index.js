@@ -230,7 +230,7 @@ app.put(
   }
 );
 
-app.put(
+/*app.put(
   "/users/update/password",
   passport.authenticate("jwt", { session: false }),
   [
@@ -266,7 +266,7 @@ app.put(
         res.status(500).send("Error: " + error);
       });
   }
-);
+);*/
 
 app.post(
   "/users/:username/favorites/:movieId",
