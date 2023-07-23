@@ -66,7 +66,8 @@ app.use((err, req, res, next) => {
 
 app.get(
   "/movies",
-  /*passport.authenticate('jwt', { session: false }),*/ (req, res) => {
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
     Movies.find({})
       .then((movies) => {
         res.status(200).json(movies);
@@ -229,44 +230,6 @@ app.put(
       });
   }
 );
-
-/*app.put(
-  "/users/update/password",
-  passport.authenticate("jwt", { session: false }),
-  [
-    check("newPassword", "new Password needs to be at least 8 characters long.")
-      .isLength({ min: 8 })
-      .not()
-      .isEmpty(),
-  ],
-  (req, res) => {
-    let errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
-    }
-    res.send("HAHAHA");
-    passport.authenticate("local", { session: false }, (error, user, info) => {
-      if (error || !user) {
-        return res.status(400).json({
-          message: "Incorrect username or password!",
-        });
-      }
-    })(req, res);
-    let newPasswordHashed = Users.hashPassword(req.body.newPassword);
-    Users.findOneAndUpdate(
-      { Username: req.body.Username },
-      { Password: newPasswordHashed },
-      { returnDocument: "after" }
-    )
-      .then((user) => {
-        res.status(200).json(user);
-      })
-      .catch((error) => {
-        console.error(error);
-        res.status(500).send("Error: " + error);
-      });
-  }
-);*/
 
 app.post(
   "/users/:username/favorites/:movieId",
