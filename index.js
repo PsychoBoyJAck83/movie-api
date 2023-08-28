@@ -110,6 +110,38 @@ app.get(
 );
 
 app.get(
+  "/user/:username",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Users.findOne({ Username: req.params.username })
+      .then((user) => {
+        if (user) res.status(200).json(user);
+        else res.status(404).send("User not found");
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send("Error: " + error);
+      });
+  }
+);
+
+app.get(
+  "/users/:username/favorites/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Users.findOne({ Username: req.params.username })
+      .then((user) => {
+        if (user) res.status(200).json(user.favoriteMovies);
+        else res.status(404).send("User not found");
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send("Error: " + error);
+      });
+  }
+);
+
+app.get(
   "/directors/:name",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
