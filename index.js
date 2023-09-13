@@ -64,6 +64,18 @@ app.use((err, req, res, next) => {
 
 //-----------------------------------------------------------------------------------------------------------------Endpoints
 
+/**
+ * Get a list of all movies.
+ *
+ * @function
+ * @name getMovies
+ * @memberof app
+ * @inner
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - JSON response with a list of movies.
+ * @throws {Object} - JSON response with an error message if an error occurs.
+ */
 app.get(
   "/movies",
   passport.authenticate("jwt", { session: false }),
@@ -79,6 +91,18 @@ app.get(
   }
 );
 
+/**
+ * Get a movie by its title.
+ *
+ * @function
+ * @name getMovieByTitle
+ * @memberof app
+ * @inner
+ * @param {Object} req - Express request object containing the movie title as a parameter.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - JSON response with a movie matching the provided title.
+ * @throws {Object} - JSON response with an error message if an error occurs.
+ */
 app.get(
   "/movies/:title",
   passport.authenticate("jwt", { session: false }),
@@ -94,6 +118,18 @@ app.get(
   }
 );
 
+/**
+ * Get the genre of a movie by its title.
+ *
+ * @function
+ * @name getMovieGenre
+ * @memberof app
+ * @inner
+ * @param {Object} req - Express request object containing the movie title as a parameter.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - JSON response with the genre of the movie matching the provided title.
+ * @throws {Object} - JSON response with an error message if an error occurs.
+ */
 app.get(
   "/movies/:title/genre",
   passport.authenticate("jwt", { session: false }),
@@ -109,6 +145,18 @@ app.get(
   }
 );
 
+/**
+ * Get a user by their username.
+ *
+ * @function
+ * @name getUserByUsername
+ * @memberof app
+ * @inner
+ * @param {Object} req - Express request object containing the username as a parameter.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - JSON response with a user matching the provided username.
+ * @throws {Object} - JSON response with an error message if an error occurs or if the user is not found.
+ */
 app.get(
   "/users/:username",
   passport.authenticate("jwt", { session: false }),
@@ -125,6 +173,18 @@ app.get(
   }
 );
 
+/**
+ * Get the favorite movies of a user by their username.
+ *
+ * @function
+ * @name getUserFavoriteMovies
+ * @memberof app
+ * @inner
+ * @param {Object} req - Express request object containing the username as a parameter.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - JSON response with the favorite movies of the user matching the provided username.
+ * @throws {Object} - JSON response with an error message if an error occurs or if the user is not found.
+ */
 app.get(
   "/users/:username/favorites/",
   passport.authenticate("jwt", { session: false }),
@@ -141,6 +201,18 @@ app.get(
   }
 );
 
+/**
+ * Get a director by their name.
+ *
+ * @function
+ * @name getDirectorByName
+ * @memberof app
+ * @inner
+ * @param {Object} req - Express request object containing the director's name as a parameter.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - JSON response with the director matching the provided name.
+ * @throws {Object} - JSON response with an error message if an error occurs.
+ */
 app.get(
   "/directors/:name",
   passport.authenticate("jwt", { session: false }),
@@ -156,6 +228,18 @@ app.get(
   }
 );
 
+/**
+ * Create a new user.
+ *
+ * @function
+ * @name createUser
+ * @memberof app
+ * @inner
+ * @param {Object} req - Express request object containing user information in the request body.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - JSON response with the newly created user information.
+ * @throws {Object} - JSON response with an error message if validation fails, the username already exists, or an error occurs during user creation.
+ */
 app.post(
   "/users",
   [
@@ -165,7 +249,7 @@ app.post(
     ).isLength({ min: 6 }),
     check(
       "Username",
-      "Username must consist of only alphanumerical characters."
+      "Username must consist of only alphanumeric characters."
     ).isAlphanumeric(),
     check(
       "Username",
@@ -177,8 +261,8 @@ app.post(
     ).isLength({ min: 8 }),
     check("email", "Email is required.").not().isEmpty(),
     check("email", "Invalid email address.").isEmail(),
+    check("birthDate", "Invalid date format.").isDate(),
   ],
-  check("birthDate", "Invalid date format.").isDate(),
   (req, res) => {
     let errors = validationResult(req);
 
@@ -214,6 +298,18 @@ app.post(
   }
 );
 
+/**
+ * Update user information.
+ *
+ * @function
+ * @name updateUser
+ * @memberof app
+ * @inner
+ * @param {Object} req - Express request object containing updated user information in the request body.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - JSON response with the updated user information.
+ * @throws {Object} - JSON response with an error message if validation fails or an error occurs during user update.
+ */
 app.put(
   "/users/update/:username",
   passport.authenticate("jwt", { session: false }),
@@ -221,10 +317,7 @@ app.put(
     check("Username", "Username needs to be at least 6 characters long.")
       .isLength({ min: 6 })
       .optional({ checkFalsy: true }),
-    check(
-      "Username",
-      "Username must consist of only alphanumerical characters."
-    )
+    check("Username", "Username must consist of only alphanumeric characters.")
       .isAlphanumeric()
       .optional({ checkFalsy: true }),
     check("Password", "Password needs to be at least 8 characters long.")
@@ -263,6 +356,18 @@ app.put(
   }
 );
 
+/**
+ * Add a movie to a user's list of favorite movies.
+ *
+ * @function
+ * @name addFavoriteMovie
+ * @memberof app
+ * @inner
+ * @param {Object} req - Express request object containing the movie ID in the URL parameters.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - JSON response with the updated list of user's favorite movies.
+ * @throws {Object} - JSON response with an error message if the movie ID is invalid or an error occurs during the update.
+ */
 app.post(
   "/users/:username/favorites/:movieId",
   passport.authenticate("jwt", { session: false }),
@@ -293,6 +398,18 @@ app.post(
   }
 );
 
+/**
+ * Remove a movie from a user's list of favorite movies.
+ *
+ * @function
+ * @name removeFavoriteMovie
+ * @memberof app
+ * @inner
+ * @param {Object} req - Express request object containing the movie ID in the URL parameters.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - JSON response with the updated list of user's favorite movies.
+ * @throws {Object} - JSON response with an error message if the movie ID is invalid or an error occurs during the update.
+ */
 app.delete(
   "/users/:username/favorites/:movieId",
   passport.authenticate("jwt", { session: false }),
@@ -333,6 +450,18 @@ app.delete(
   }
 );
 
+/**
+ * Delete a user by their username.
+ *
+ * @function
+ * @name deleteUser
+ * @memberof app
+ * @inner
+ * @param {Object} req - Express request object containing the username in the URL parameters.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - JSON response indicating the success or failure of the user deletion.
+ * @throws {Object} - JSON response with an error message if the user is not found or an error occurs during deletion.
+ */
 app.delete(
   "/users/:username",
   passport.authenticate("jwt", { session: false }),
@@ -351,12 +480,34 @@ app.delete(
   }
 );
 
+/**
+ * Default route that returns a message.
+ *
+ * @function
+ * @name defaultRoute
+ * @memberof app
+ * @inner
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - JSON response with a message.
+ */
 app.get("/", (req, res) => {
   res.status(200).send("I will make him an offer he can`t refuse...");
 });
 
 //--------------------------------------------------------------------------------------------------------------------Server
 
+/**
+ * Start the server and listen on the specified port.
+ *
+ * @function
+ * @name startServer
+ * @memberof app
+ * @inner
+ * @param {number} port - The port on which the server should listen.
+ * @param {string} host - The host address on which the server should listen.
+ * @param {Function} callback - A callback function to be executed when the server starts.
+ */
 const port = process.env.PORT || 8080;
 app.listen(port, "0.0.0.0", () => {
   console.log("Listening on Port " + port);
